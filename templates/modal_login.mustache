@@ -1,0 +1,25 @@
+ {{<Core / modal}}
+     {{$ Title}} {{# str}} login {{/ str}} {{title}}
+     {{$ Body}}
+         <Div class = "container">
+             <Form>
+                 <Div class = "form-group row">
+                     <Label for = "inputEmail" class = "col-sm-2 col-form-label"> {{# str}} email {{str}} </ label>
+                     <Div class = "col-sm-10">
+                         <Input type = "email" class = "formulário-controle" id = "inputEmail" placeholder = "{{# str}} email {{str}}"
+                     </ Div>
+                 </ Div>
+                 <Div class = "form-group row">
+                     <Label for = "inputPassword" class = "col-sm-2 col-form-label"> {{# str}} senha {{str}} </ label>
+                     <Div class = "col-sm-10">
+                         <Input type = "password" class = "formulário-controle" id = "inputPassword" placeholder = "{{# str}} senha {{str}}"
+                     </ Div>
+                 </ Div>
+             </ Form>
+         </ Div>
+     {{/corpo}}
+     {{$ Footer}}
+         <Button type = "button" class = "btn btn-primário" data-action = "login"> {{# str}} login {{str}} </ button>
+         <Button type = "button" class = "btn btn-secundário" data-action = "cancel"> {{# str}} cancel {{/ str}} </ button>
+     {{/rodapé}}
+ {{/ Core / modal}}

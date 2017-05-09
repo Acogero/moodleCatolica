@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/sepex/db" VERSION="20101203" COMMENT="XMLDB file for Moodle mod/sepex"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="sepex" COMMENT="Tabela principal do módulo sepex">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="Course sepex activity belongs to"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="name field for moodle instances"/>
+        <FIELD NAME="intro" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="General introduction of the sepex activity"/>
+        <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Format of the intro field (MOODLE, HTML, MARKDOWN...)"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="grade" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="100" SEQUENCE="false" COMMENT="The maximum grade. Can be negative to indicate the use of a scale."/>
+        <FIELD NAME="timeavailablefrom" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timeavailableto" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timeviewfrom" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timeviewto" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+      
+    <TABLE NAME="sepex_categoria" COMMENT="Tabela do Projeto">
+      <FIELDS>
+        <FIELD NAME="cod_categoria" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="nome_categoria" TYPE="char" LENGTH="200" NOTNULL="true" COMMENT="Nome da categoria"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="cod_categoria"/>
+      </KEYS>
+    </TABLE>
+    
+    <TABLE NAME="sepex_projeto" COMMENT="Tabela do Projeto">
+      <FIELDS>
+        <FIELD NAME="id_projeto" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
+        <FIELD NAME="cod_projeto" TYPE="char" LENGTH="15" NOTNULL="true" UNSIGNED="true"/>
+        <FIELD NAME="titulo" TYPE="char" LENGTH="255" NOTNULL="true" COMMENT="Titulo do projeto"/>
+        <FIELD NAME="resumo" TYPE="text" NOTNULL="true" COMMENT="Resumo do aluno"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="12" NOTNULL="false"/>
+        <FIELD NAME="data_cadastro" TYPE="char" LENGTH="50" NOTNULL="true"/>
+        <FIELD NAME="email" TYPE="char" LENGTH="100" NOTNULL="true"/>
+        <FIELD NAME="tags" TYPE="char" LENGTH="255" NOTNULL="true"/>
+        <FIELD NAME="cod_periodo" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Titulo do projeto"/>
+        <FIELD NAME="turno" TYPE="char" LENGTH="10" NOTNULL="true" COMMENT="turno de apresentacao do projeto"/>
+        <FIELD NAME="area_curso" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="area do curso"/>
+        <FIELD NAME="aloca_mesa" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="permite o aluno alocar mesa"/>
+        <FIELD NAME="local_apresentacao" TYPE="char" LENGTH="30" NOTNULL="false" COMMENT="Local de apresentacao do projeto"/>
+        <FIELD NAME="data_apresentacao" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="data de apresentacao do projeto"/>
+        <FIELD NAME="hora_apresentacao" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="hora de apresentacao do projeto"/>
+        <FIELD NAME="cod_categoria" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="id_local_apresentacao" TYPE="int" LENGTH="10" NOTNULL="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_projeto"/>
+        <KEY NAME="cod_categoria" TYPE="foreign" FIELDS="cod_categoria" REFTABLE="sepex_categoria" REFFIELDS="cod_categoria"/>
+        <KEY NAME="id_local_apresentacao" TYPE="foreign" FIELDS="id_local_apresentacao" REFTABLE="sepex_local_apresentacao" REFFIELDS="id_local_apresentacao"/>
+      </KEYS>
+    </TABLE>
+    
+    <TABLE NAME="sepex_aluno" COMMENT="Tabela de alunos">
+      <FIELDS>
+        <FIELD NAME="matricula" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
+        <FIELD NAME="nome_aluno" TYPE="char" LENGTH="300" NOTNULL="true" COMMENT="Nome do aluno"/>
+        <FIELD NAME="id_projeto" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="codigo dos projetos de participacao do aluno"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="matricula"/>
+      </KEYS>
+    </TABLE>
+    
+    <TABLE NAME="sepex_aluno_projeto" COMMENT="Tabela de relação aluno e projeto">
+      <FIELDS>
+        <FIELD NAME="id_aluno_projeto" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>  
+        <FIELD NAME="aluno_matricula" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" />
+        <FIELD NAME="id_projeto" TYPE="int" LENGTH="10" NOTNULL="true"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_aluno_projeto"/>
+        <KEY NAME="aluno_matricula" TYPE="foreign" FIELDS="aluno_matricula" REFTABLE="sepex_aluno" REFFIELDS="matricula"/>
+        <KEY NAME="id_projeto" TYPE="foreign" FIELDS="id_projeto" REFTABLE="sepex_projeto" REFFIELDS="id_projeto"/>
+      </KEYS>
+    </TABLE>
+    
+    <TABLE NAME="sepex_curso" COMMENT="Tabela de cursos">
+      <FIELDS>
+        <FIELD NAME="cod_curso" TYPE="char" LENGTH="5" NOTNULL="true" />
+        <FIELD NAME="nome_curso" TYPE="char" LENGTH="50" NOTNULL="true" COMMENT="Nome do curso"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="cod_curso"/>
+      </KEYS>
+    </TABLE>
+    
+    <TABLE NAME="sepex_projeto_curso" COMMENT="Tabela de relação projeto e curso ">
+      <FIELDS>
+        <FIELD NAME="id_curso_projeto" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>  
+        <FIELD NAME="curso_cod_curso" TYPE="char" LENGTH="5" NOTNULL="true"/>
+        <FIELD NAME="projeto_id_projeto" TYPE="int" LENGTH="10" NOTNULL="true"/>        
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_curso_projeto"/>
+        <KEY NAME="curso_cod_curso" TYPE="foreign" FIELDS="curso_cod_curso" REFTABLE="sepex_curso" REFFIELDS="cod_curso"/>
+        <KEY NAME="projeto_id_projeto" TYPE="foreign" FIELDS="projeto_id_projeto" REFTABLE="sepex_projeto" REFFIELDS="id_projeto"/>        
+      </KEYS>
+    </TABLE>
+    
+    <TABLE NAME="sepex_professor" COMMENT="Tabela do professor avaliador">
+      <FIELDS>
+        <FIELD NAME="cod_professor" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
+        <FIELD NAME="nome_professor" TYPE="char" LENGTH="255" NOTNULL="true" COMMENT="Nome do professor avaliador"/>            
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="cod_professor"/>
+      </KEYS>
+    </TABLE>    
+    
+    <TABLE NAME="sepex_projeto_professor" COMMENT="Tabela de registro de avaliacoes ">
+      <FIELDS>
+        <FIELD NAME="id_projeto_professor" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>  
+        <FIELD NAME="id_projeto" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="data_avaliacao" TYPE="char" LENGTH="50" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="nota_resumo" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="nota_apresentacao" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="professor_cod_professor" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true"/>
+        <FIELD NAME="tipo" TYPE="char" LENGTH="15" NOTNULL="true" COMMENT="avaliador-orientador"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_projeto_professor"/>
+        <KEY NAME="id_projeto" TYPE="foreign" FIELDS="id_projeto" REFTABLE="sepex_projeto" REFFIELDS="id_projeto"/>
+        <KEY NAME="professor_cod_professor" TYPE="foreign" FIELDS="professor_cod_professor" REFTABLE="sepex_professor" REFFIELDS="cod_professor"/>
+      </KEYS>
+    </TABLE>
+    
+    <TABLE NAME="sepex_local_apresentacao" COMMENT="Tabela de registro dos locais de apresentacao">
+      <FIELDS>
+        <FIELD NAME="id_local_apresentacao" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>  
+        <FIELD NAME="nome_local_apresentacao" TYPE="char" LENGTH="255" NOTNULL="true"/>       
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_local_apresentacao"/>                
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
