@@ -47,15 +47,12 @@ if ($id) {
 
 $lang = current_language();
 require_login($course, true, $cm);
-//$context = context_module::instance($cm->id);
 $context_course = context_course::instance($course -> id);
-$PAGE->set_context($context);
-        
+
 $event = \mod_sepex\event\course_module_viewed::create(array(
     'objectid' => $PAGE->cm->instance,
     'context' => $PAGE->context,
 ));
-
 $event->add_record_snapshot('course', $PAGE->course);
 $event->add_record_snapshot($PAGE->cm->modname, $sepex);
 $event->trigger();
@@ -67,7 +64,7 @@ $PAGE->set_heading(format_string($sepex->name));
 echo $OUTPUT->header();
 
     $showactivity = true;
-  
+    if (!$canmanageentries) {
         $timenow = time();
         if (!empty($sepex->timeavailablefrom) && $sepex->timeavailablefrom > $timenow) {
             echo $OUTPUT->notification(get_string('notopenyet', 'sepex', userdate($sepex->timeavailablefrom)));
@@ -76,35 +73,32 @@ echo $OUTPUT->header();
             echo $OUTPUT->notification(get_string('expired', 'sepex', userdate($sepex->timeavailableto)));
             $showactivity = false;
         }
-
+    } 
     if ($showactivity) {
-        //-------------------------------- ALUNO                       
+        //-------------------------------- ALUNO
         if (!has_capability('mod/sepex:openformulario', $context_course)) {
-          //Se for aluno redireciono para o formulario.            
+          
+          //Se for aluno redireciono para o formulario.
+            echo'teste do if';
             $usuario = $USER->username;
             listar_projetos_aluno($usuario, $id);
-            
             $acao =  htmlspecialchars($_POST['acao']);
             $proj =  htmlspecialchars($_POST['proj']);
             if($acao==2){
-                apagar_formulario($proj);
-                echo "<meta HTTP-EQUIV='refresh' CONTENT='0;URL=view.php?id=$id'>";
-            }else{
-                $acao =  '';
-                $proj =  $acao;
+              apagar_formulario($proj);
+            echo "<meta HTTP-EQUIV='refresh' CONTENT='0;URL=view.php?id=$id'>";
             }            
         }
         //-------------------------------- PROFESSOR
-        else if (has_capability('mod/sepex:openprofessor', $context_course)) {            
-            echo 'JesusVem!';                          
+        else{
+          //Se for acima de professor exibo este conteúdo.
+            $usuario = $USER->username;
+            listar_projetos_professor($usuario);
+            //$acao =  htmlspecialchars($_POST['acao']);
+            //$proj =  htmlspecialchars($_POST['proj']);
+            
         }
-        else {
-            echo $OUTPUT->heading(format_string('Organização sepex'), 2);
-            echo $OUTPUT->box(format_module_intro('sepex', $sepex, $cm->id), 'generalbox', 'intro');
-            viewGerente($id);
-        }
-        
-        
+   
     }
 //Fim da página
     echo $OUTPUT->footer();

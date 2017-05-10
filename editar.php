@@ -29,7 +29,7 @@ require_login($course, true, $cm);
 $context_course = context_course::instance($course -> id);
 
 // DEFININDO LINK PARA PÁGINA DO USUÁRIO.
-define('FORMULARIO_LINK', "cadastro_sepex.php?id=".$id);
+define('FORMULARIO_LINK', "cad-form.php?id=".$id);
 define('FORMULARIO_URL', $protocol . $path ."/". FORMULARIO_LINK);
 
 $event = \mod_sepex\event\course_module_viewed::create(array(
@@ -41,7 +41,7 @@ $event->add_record_snapshot('course', $PAGE->course);
 $event->add_record_snapshot($PAGE->cm->modname, $sepex);
 $event->trigger();
 
-$PAGE->set_url('/mod/sepex/cadastro_sepex.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/sepex/cad-form.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($sepex->name));
 $PAGE->set_heading($course->fullname);
 
@@ -52,12 +52,15 @@ define('VIEW_URL', $protocol . $path ."/". VIEW_URL_LINK);
 
 $proj = htmlspecialchars($_GET['data']);
 //INSTANCIAÇÃO DO OBJETO FORMULÁRIO
-$mform = new Formulario("cadastro_sepex.php?id={$id}", array('cod_curso' => 'ENF', 'email' => $proj));
+$mform = new Formulario("cad-form.php?id={$id}", array('cod_curso' => 'ENF', 'email' => $proj));
  
 if ($mform->is_cancelled()):
   // Manipular a operação de cancelamento do formulário, se o botão Cancelar estiver presente no formulário
-elseif($dados = $mform->get_data()):
+elseif($fromform = $mform->get_data()):
 
+    $dados = $mform->get_data();
+
+  
 //   header("Location:". VIEW_URL_LINK);
 else:
   // este ramo é executado se o formulário é enviado, mas os dados não são validados eo formulário deve ser exibido novamente

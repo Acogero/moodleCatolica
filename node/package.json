@@ -1,0 +1,32 @@
+{
+  "name": "sepex.json",
+  "version": "1.0.0",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-amdcheck": "^1.3.2",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-less": "^1.4.1",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-load-gruntfile": "0.0.2"
+  },
+  "description": "Arquivo de armazenamento das funcionalidades em js do plugin sepex",
+  "main": "sepex",
+  "scripts": {
+    "test": "sepex"
+  },
+  "repository": {
+    "type": "git",
+    "url": "sepex"
+  },
+  "keywords": [
+    "sepex"
+  ],
+  "author": "Carlos Eduardo Vieira",
+  "license": "ISC",
+  "dependencies": {
+    "grunt-contrib-uglify": "^0.5.1"
+  }
+}
