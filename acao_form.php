@@ -32,7 +32,7 @@ require_login($course, true, $cm);
 $context_course = context_course::instance($course -> id);
 
 // DEFININDO LINK PARA PÁGINA DO USUÁRIO.
-define('FORMULARIO_LINK', "cad-form.php?id=".$id);
+define('FORMULARIO_LINK', "cadastro_sepex.php?id=".$id);
 define('FORMULARIO_URL', $protocol . $path ."/". FORMULARIO_LINK);
 
 $event = \mod_sepex\event\course_module_viewed::create(array(
@@ -44,7 +44,7 @@ $event->add_record_snapshot('course', $PAGE->course);
 $event->add_record_snapshot($PAGE->cm->modname, $sepex);
 $event->trigger();
 
-$PAGE->set_url('/mod/sepex/cad-form.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/sepex/cadastro_sepex.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($sepex->name));
 $PAGE->set_heading(format_string($sepex->name));
 

@@ -1,15 +1,9 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of formulario
+ * Formulario de inscrição sepex, aqui são definidos os campos necessários para o cadastro dos projetos.
  *
- * @author roots
+ * @author Carlos Eduardo Vieira. Linkedin<>.
  */
 
 require_once ("../../config.php");
@@ -107,15 +101,7 @@ class Formulario extends moodleform {
         $mform->addRule('cod_categoria', get_string('categoria', 'sepex', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('cod_categoria', 'categoria_help', 'sepex');
         $mform->setDefault('cod_categoria',$this->_customdata['cod_categoria']);
-        
-        //EMAIL
-        $mform->addElement('text', 'email', get_string('email', 'sepex'), array('size' => '64'));
-        $mform->addRule('email', get_string('emailvazio', 'sepex'), 'required', null, 'client');
-        $mform->addRule('email', get_string('emailvazio', 'sepex'), 'email', null, 'client');
-        $mform->addRule('email', get_string('email', 'sepex', 255), 'maxlength', 255, 'client');
-        $mform->addHelpButton('email', 'email_help', 'sepex');        
-        $mform->setDefault('email',$this->_customdata['email']);
-        
+              
         //TITULO DO TRABALHO
         $mform->addElement('text', 'titulo', get_string('titulo', 'sepex'), array('size' => '64'));
         $mform->addRule('titulo', get_string('titulovazio', 'sepex'), 'required', null, 'client');
@@ -152,14 +138,26 @@ class Formulario extends moodleform {
         $mform->addHelpButton('resumo', 'resumo_help', 'sepex');
         $mform->setType('resumo', PARAM_RAW);
         
-        
-        
         //TAGS       
         $mform->addElement('text', 'tags', get_string('tags', 'sepex'), array('size' => '64'));
         $mform->addRule('tags', get_string('tagsvazio', 'sepex'), 'required', null, 'client');
         $mform->addRule('tags', get_string('tags', '', 255), 'tags', 255, 'client');
         $mform->addHelpButton('tags', 'tags_help', 'sepex');
         $mform->setDefault('tags',$this->_customdata['tags']);
+       
+        //ALOCA MESA
+        $mesa = array(
+            '' => 'Escolher',
+            '1' => 'Eu desejo uma mesa',
+            '0' => 'Não desejo uma mesa',
+        );
+        $mform->addElement('select', 'aloca_mesa', get_string('alocamesa', 'sepex'), $mesa);
+        $mform->addRule('aloca_mesa', get_string('alocamesavazio', 'sepex'), 'required', null, 'client');
+        $mform->addRule('aloca_mesa', get_string('alocamesa', 'sepex', 255), 'maxlength', 255, 'client');
+        $mform->addHelpButton('aloca_mesa', 'alocamesa_help', 'sepex');
+        $mform->setDefault('aloca_mesa',$this->_customdata['aloca_mesa']);
+        
+        
         
         $mform->addElement('submit', 'btnEnviar', get_string("btnEnviar", 'sepex'));
         

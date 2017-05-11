@@ -46,7 +46,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Modifique os recursos conforme necessário e remova esse comentário.
 $capabilities = array(
     'mod/sepex:addinstance' => array(
         'riskbitmask' => RISK_XSS,
@@ -86,5 +85,25 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         )
+    ),
+    
+    'mod/sepex:openprofessor' => array(
+
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW            
+        )
+    ),
+    
+     'mod/sepex:opengerente' => array(
+
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW            
+        )
     )
 );
+
