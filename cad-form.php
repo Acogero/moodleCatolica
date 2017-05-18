@@ -69,21 +69,22 @@ else{
     
     //Instanciação de um novo formulario passando como parametro: (destino_formulario, array(informe aqui os campos e os valores dos campos)
     //Dentro do array passamos os campos e os valores que enviaremos previamente ao formulario para edição.
-    $mform = new Formulario("cad-form.php?id={$id}&acao=10&idp={$codProjeto}&cod={$projeto[$codProjeto]->cod_projeto}", array('coursecontext'=>$context_course, 'modcontext'=>$modcontext, 'cod_curso'=>$projeto[$codProjeto]->curso_cod_curso,'titulo' => $projeto[$codProjeto]->titulo, 'resumo' => $projeto[$codProjeto]->resumo, 'email' => $projeto[$codProjeto]->email, 'tags' => $projeto[$codProjeto]->tags, 'cod_periodo' => $projeto[$codProjeto]->cod_periodo, 'turno' => $projeto[$codProjeto]->turno, 'cod_categoria' => $projeto[$codProjeto]->cod_categoria, 'aluno_matricula' => $alunos, 'cod_professor'=> $professores[1],'cod_professor2'=> $professores[2] ));
+    $mform = new Formulario("cad-form.php?id={$id}&acao=10&idp={$codProjeto}&cod={$projeto[$codProjeto]->cod_projeto}", array('coursecontext'=>$context_course, 'modcontext'=>$modcontext, 'cod_curso'=>$projeto[$codProjeto]->curso_cod_curso,'titulo' => $projeto[$codProjeto]->titulo, 'resumo' => $projeto[$codProjeto]->resumo, 'email' => $projeto[$codProjeto]->email, 'tags' => $projeto[$codProjeto]->tags, 'aloca_mesa' => $projeto[$codProjeto]->aloca_mesa, 'cod_periodo' => $projeto[$codProjeto]->cod_periodo, 'turno' => $projeto[$codProjeto]->turno, 'cod_categoria' => $projeto[$codProjeto]->cod_categoria, 'aluno_matricula' => $alunos, 'cod_professor'=> $professores[1],'cod_professor2'=> $professores[2] ));
   
 }
 //Verifica-se se estamos inserindo ou adicionando um novo cadastro
 $acao = htmlspecialchars($_GET['acao']);
 $id_projeto = htmlspecialchars($_GET['idp']);
 $codigo_projeto = htmlspecialchars($_GET['cod']);
-if($acao== 10){
+//Esse numero 10 vem da instanciacao do formulario.
+if($acao == 10){
     if ($mform->is_cancelled()):
       // Manipular a operação de cancelamento do formulário, se o botão Cancelar estiver presente no formulário
     elseif($fromform = $mform->get_data()):
         
        $dados = $mform->get_data();
     
-       atualizar_formulario($dados,$codigo_projeto,$id_projeto);
+       atualizar_formulario($dados,$id_projeto);
 
        header("Location:". VIEW_URL_LINK);
     else:

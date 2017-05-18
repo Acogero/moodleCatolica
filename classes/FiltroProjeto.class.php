@@ -28,7 +28,7 @@ class FiltroProjeto extends moodleform{
         $mform->addElement('select', 'area_curso', get_string('area', 'sepex'), $area);       
         $mform->addRule('area_curso', get_string('area', 'sepex'), 'maxlength', 255, 'client');
         $mform->addHelpButton('area_curso', 'area_help', 'sepex');        
-        
+        $mform->setDefault('area_curso',$this->_customdata['area_curso']);
         //TURNO
          $turnos = array(
             '' => 'Escolher',
@@ -38,6 +38,7 @@ class FiltroProjeto extends moodleform{
         $mform->addElement('select', 'turno', get_string('turno', 'sepex'), $turnos);        
         $mform->addRule('turno', get_string('turno', 'sepex', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('turno', 'turno_help', 'sepex');        
+        $mform->setDefault('turno',$this->_customdata['turno']);
         
          $categorias = array(
             '' => 'Escolher',
@@ -55,7 +56,7 @@ class FiltroProjeto extends moodleform{
         $mform->addElement('select', 'cod_categoria', get_string('categoria', 'sepex'), $categorias);       
         $mform->addRule('cod_categoria', get_string('categoria', 'sepex', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('cod_categoria', 'categoria_help', 'sepex');        
-        
+        $mform->setDefault('cod_categoria',$this->_customdata['cod_categoria']);
         
         $this->add_action_buttons($cancel = true, $submitlabel = get_string('listarprojetos', 'sepex'));
     }

@@ -86,26 +86,23 @@ echo $OUTPUT->header();
             
             $acao =  htmlspecialchars($_POST['acao']);
             $proj =  htmlspecialchars($_POST['proj']);
-
+            
             if($acao==2){
                 apagar_formulario($proj);
                 echo "<meta HTTP-EQUIV='refresh' CONTENT='0;URL=view.php?id=$id'>";
+            }else{
+                $acao =  '';
+                $proj =  $acao;
             }            
         }
-        /*
         //-------------------------------- PROFESSOR
         else if (has_capability('mod/sepex:openprofessor', $context_course)) {            
-            $usuario = $USER->username;
-            listar_projetos_professor($usuario, $id);      
+            echo 'JesusVem!';                          
         }
-        */
         else {
             echo $OUTPUT->heading(format_string('Organização sepex'), 2);
             echo $OUTPUT->box(format_module_intro('sepex', $sepex, $cm->id), 'generalbox', 'intro');
             viewGerente($id);
-
-            $usuario = $USER->username;
-            listar_projetos_professor($usuario, $id);      
         }
         
         

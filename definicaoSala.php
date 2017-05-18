@@ -36,28 +36,26 @@ $event->add_record_snapshot('course', $PAGE->course);
 $event->add_record_snapshot($PAGE->cm->modname, $sepex);
 $event->trigger();
 
-$PAGE->set_url('/mod/sepex/cadastro_sepex.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/sepex/cad-form.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($sepex->name));
 $PAGE->set_heading($course->fullname);
-      
-    echo $OUTPUT->header();         
-    echo $OUTPUT->heading(format_string('Definição de salas'), 2);
-    echo $OUTPUT->box(format_module_intro('sepex', $sepex, $cm->id), 'generalbox', 'intro');   
-                   
-    $mform = new FiltroProjeto("local_apresentacao.php?id={$id}");
+
+echo $OUTPUT->header();        
+echo $OUTPUT->heading(format_string('Definição de salas'), 2);
+echo $OUTPUT->box(format_module_intro('sepex', $sepex, $cm->id), 'generalbox', 'intro');
+
+    $mform = new FiltroProjeto("definicaoSala.php?id={$id}");
 
     if($dados = $mform->get_data()):        
-        
-        $mform->display();
-        exibir_botao_cadastrar_local_apresentacao($id);
+
+        $mform->display();  
         projetos_filtrados($dados,$id);
         
     else:
-        $mform->display(); 
-        exibir_botao_cadastrar_local_apresentacao($id);
+            $mform->display();             
     endif;
-            
-    echo $OUTPUT->footer();
+
+echo $OUTPUT->footer();
 
 
  

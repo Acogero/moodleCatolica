@@ -116,8 +116,7 @@ class Formulario extends moodleform {
         $mform->addHelpButton('aluno_matricula', 'integrantes_help', 'sepex');
         $mform->setDefault('aluno_matricula',$this->_customdata['aluno_matricula']);
               
-        //ORIENTADOR
-        //$orientadores =  $DB->get_records_sql('SELECT nome FROM mdl_sepex_professoravaliador');
+        //ORIENTADOR        
         $orientadores = $DB->get_records('sepex_professor');
         $professores = array(''=>'Escolher',);
         foreach($orientadores as $professor){
