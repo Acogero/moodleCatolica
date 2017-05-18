@@ -39,46 +39,19 @@ $PAGE->set_title(format_string($sepex->name));
 $PAGE->set_heading(format_string($sepex->name));
 
 $acao = htmlspecialchars($_POST['acao']);
-$check = $_GET['qtdAlunos'];
+$check = $_POST['qtdAlunos'];
 $alunosPresentes = array();
 
-/*
-function teste ($num){
-    if($num > -1){
-        if(!$_GET['CheckAluno'.$num]){
-            teste($num - 1);
-        }else{
-            array_push($alunosPresentes, htmlspecialchars($_GET['CheckAluno'.$num]));
-            //print_r(" Aluno : " . $num . " ; " . $_POST['CheckAluno'.$num]);
-            teste($num - 1);
-        }
-    }
-}
-*/
-
-//teste($check);
-
-
-for($check; $check > 0; $check = $check - 1){
-    if(!$_GET['CheckAluno'.$check]){
+//FOR PARA SABER QUAIS ALUNOS ESTÃO PRESENTES
+for($check; $check > -1; $check = $check - 1){
+    if(!$_POST['CheckAluno'.$check]){
         continue;
     }else{
-        array_push($alunosPresentes, htmlspecialchars($_GET['CheckAluno'.$check]));  
+        array_push($alunosPresentes, htmlspecialchars($_POST['CheckAluno'.$check]));  
     }
 }
 
-echo '<pre>';
-print_r($alunosPresentes);
-echo '</pre>';
-//print_r($alunosPresentes);
-/*
-    VIA GET ELE CONSEGUE ENVIAR OS PARÂMETROS NECESSÁRIOS.
-    ARRUMAR UMA SOLUÇÃO PARA INSERIR OS ALUNOS DINAMICAMENTE NO 'ARRAY' $presentes
-    PARA PODER EXIBIR QUEM ESTEVE PRESENTE.
-
-    ALTERAR O NOME DO INPUT EM AVALIACAO.PHP, FAZER INCREMENTÁVEL
-*/
-
+//SWITCH PARA SABER QUAL TIPO DE TRABALHO:
 switch($acao){
     case 1:
         $local  = htmlspecialchars($_POST['item01']);
@@ -120,12 +93,13 @@ switch($acao){
         $resultado = $local + $local2 + $local3 + $local4 + $local5;
     break;
 }
-
+//-----------------------------------------
 echo $OUTPUT->header();
 
 $formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'action'=> "acao_avaliacao.php?id={$id}", 'method'=>"post"));
     $linkForm = html_writer::start_tag('div', array('id' => 'cabeçalho', 'style' => 'margin-top: 10%;border-style: solid;', 'class="container-fluid"'));
-        
+    
+    //TÍTULO
         $linkForm .= html_writer::start_tag('header', array('class' => 'row;'));
             $linkForm .= html_writer::start_tag('div', array('class' => 'page-header'));
                 $linkForm .= html_writer::start_tag('center');
@@ -133,14 +107,15 @@ $formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'act
                 $linkForm .= 'Resultado da Avaliação';
             $linkForm .= html_writer::end_tag('div'); 
         $linkForm .= html_writer::end_tag('header');
+    //----------------------------------------------------------------
 
-        
         $linkForm .= html_writer::start_tag('div', array('class' => 'main'));
             
             $linkForm .= html_writer::start_tag('hr');
                 $linkForm .= html_writer::start_tag('div', array('class' => 'container-fluid'));
                     $linkForm .= html_writer::start_tag('div', array('class' => 'row'));
-
+                
+                    //NOTA
                         $linkForm .= html_writer::start_tag('div', array('class' => 'col-md-6'));
                             $linkForm .= html_writer::start_tag('div', array('class' => 'input-group'));
                                 $linkForm .= html_writer::start_tag('table', array('class' => 'table table-responsive'));
@@ -151,7 +126,9 @@ $formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'act
                                             $linkForm .= html_writer::end_tag('th');
                                         $linkForm .= html_writer::end_tag('tr');
                                     $linkForm .= html_writer::end_tag('thead');
+                        //------------------------------------------------------------------                
 
+                        //ALUNOS PRESENTES
                                     $linkForm .= html_writer::start_tag('th', array('scope' => 'col'));
                                         $linkForm .= 'Alunos presentes';
                                     $linkForm .= html_writer::end_tag('th');
@@ -162,23 +139,20 @@ $formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'act
                                     
                                     $linkForm .= html_writer::end_tag('table');
                                 
-                               // print_r(' Alunos Presentes: ' . $alunosPresentes);
-                               $teste = array();
                                 foreach ($alunosPresentes as $aluno){
-                                    print_r(' FOREACH : ');
                                     $linkForm .= html_writer::start_tag('div', array('class' => 'col-md-11'));
-                                            $linkForm .= html_writer::start_tag('input', array('type' => 'checkbox', 'value' => '1'));
-                                            $linkForm .= html_writer::end_tag('input');
-                                            $teste[0] = $aluno;
-                                            $linkForm .= $teste;
+                                        $linkForm .= html_writer::start_tag('label');
+                                            $linkForm .= $aluno;
+                                        $linkForm .= html_writer::end_tag('label');                                
                                     $linkForm .= html_writer::end_tag('div');
                                 }
+                        //-------------------------------------------------------------------------------
                                 $linkForm .= html_writer::start_tag('br');
                                 $linkForm .= html_writer::end_tag('br');
-                                
+                        //BOTÕES
                                 $linkForm .= html_writer::start_tag('div', array('class' => 'row'));
                                     $linkForm .= html_writer::start_tag('div', array('class' => 'col-md-6'));
-                                    $linkForm .= html_writer::start_tag('input', array('type' => 'submit', 'class' => 'btn btn-active btn-lg', 'value' => 'Limpar'));
+                                    $linkForm .= html_writer::start_tag('input', array('type' => 'submit', 'class' => 'btn btn-active btn-lg', 'value' => 'Voltar'));
                                     $linkForm .= html_writer::end_tag('div');
                                     $linkForm .= html_writer::start_tag('div', array('class' => 'col-md-3'));
                                         $linkForm .= html_writer::start_tag('input', array('type' => 'submit', 'class' => 'btn btn-active btn-lg', 'value' => 'Enviar'));
@@ -186,6 +160,7 @@ $formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'act
                                 $linkForm .= html_writer::end_tag('div');
                                 $linkForm .= html_writer::start_tag('br');
                                 $linkForm .= html_writer::end_tag('br');
+                        //-----------------------------------------------------------------------
                             $linkForm .= html_writer::end_tag('div');
                         $linkForm .= html_writer::end_tag('div');
                     $linkForm .= html_writer::end_tag('div');

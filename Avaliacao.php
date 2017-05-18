@@ -49,7 +49,7 @@ $PAGE->set_heading(format_string($sepex->name));
 //A saída começa aqui.
 echo $OUTPUT->header();
 
-$formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'action'=> "acao_avaliacao.php?id={$id}", 'method'=>"GET"));
+$formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'action'=> "acao_avaliacao.php?id={$id}", 'method'=>"POST"));
     $linkForm = html_writer::start_tag('div', array('id' => 'cabeçalho', 'style' => 'margin-top: 10%;border-style: solid;', 'class="container-fluid"'));
     
     //TÍTULO
@@ -584,7 +584,7 @@ $formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'act
                                 $linkForm .= html_writer::end_tag('br');
                                 $linkForm .= html_writer::start_tag('div', array('class' => 'row'));
                                     $linkForm .= html_writer::start_tag('div', array('class' => 'col-md-6'));
-                                    $linkForm .= html_writer::start_tag('input', array('type' => 'submit', 'class' => 'btn btn-active btn-lg', 'value' => 'Limpar'));
+                                    $linkForm .= html_writer::start_tag('input', array('type' => 'submit', 'class' => 'btn btn-active btn-lg', 'value' => 'Voltar'));
                                     $linkForm .= html_writer::end_tag('div');
                                     $linkForm .= html_writer::start_tag('div', array('class' => 'col-md-3'));
                                         $linkForm .= html_writer::start_tag('input', array('type' => 'submit', 'class' => 'btn btn-active btn-lg', 'value' => 'Enviar'));
