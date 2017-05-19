@@ -57,15 +57,15 @@ $formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'act
             $linkForm .= html_writer::start_tag('div', array('class' => 'page-header'));
                 $linkForm .= html_writer::start_tag('center');
                 $linkForm .= html_writer::start_tag('h1');
-                $linkForm .= 'Avaliar resumo';
+                $linkForm .= 'Avaliar apresentação';
             $linkForm .= html_writer::end_tag('div'); 
         $linkForm .= html_writer::end_tag('header');
-    
+
     //SUBTÍTULO
         $linkForm .= html_writer::start_tag('div', array('class' => 'main'));
             $linkForm .= html_writer::start_tag('center');
             $linkForm .= html_writer::start_tag('h3');
-            $linkForm .= 'Codigo do projeto / nome do projeto';
+            $linkForm .= $projeto[$idProjeto]->titulo;
             $linkForm .= html_writer::end_tag('h3');
             $linkForm .= html_writer::start_tag('hr');
                 $linkForm .= html_writer::start_tag('div', array('class' => 'container-fluid'));
@@ -76,7 +76,6 @@ $formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'act
                             $linkForm .= html_writer::end_tag('label');
                             $linkForm .= html_writer::start_tag('p', array('align class' => 'text-justify'));
                                 $linkForm .= $projeto[$idProjeto]->resumo;
-                              //  $linkForm .= 'Com o aumento da utilização de aplicações web para a realização de tarefas online, que vão desde uma simples pesquisa à compra de produtos e pagamentos de contas, juntamente com o constante crescimento das plataformas de conteúdo multimídia, percebemos a dificuldade que grande parcela das pessoas que utilizam a internet tem para encontrar conteúdos ou produtos que sejam de seu interesse. Mediante esse contexto, surgiu a ideia de desenvolver um Sistema de Recomendação de Filmes em que será disponibilizado ao usuário uma lista de filmes, podendo realizar a filtragem de acordo com o gênero, devendo o usuário selecionar um filme e atribuir a ele uma nota de 1 a 5. Após a atribuição das notas, por meio de uma variação do algoritmo SlopeOne (método de recomendação subdividido da Filtragem Colaborativa que se vale do feedback efetivo) serão recomendados filmes ao usuário de acordo com o seu perfil. Para o desenvolvimento do sistema foram utilizados os conhecimentos práticos e teóricos adquiridos nas disciplinas: Programação Orientada a Objetos I, utilizando a IDE NetBeans e a linguagem JAVA. Na disciplina Fundamentos de Banco de Dados foi modelada a base de dados utilizando a ferramenta MySQL Workbench e em Projetos de Sistemas foi confeccionada toda a documentação. Pretendemos com esse sistema analisar o comportamento do algoritmo de recomendação diante da quantidade de dados utilizada para cálculo, buscando recomendar filmes que efetivamente sejam de interesse do usuário. Para implementações futuras, o sistema será atualizado para operar em ambiente web.';
                             $linkForm .= html_writer::end_tag('p');
                         $linkForm .= html_writer::end_tag('div');
 
@@ -101,8 +100,7 @@ $formulario = html_writer::start_tag('form', array('id' => 'avalicaoSepex', 'act
                                     $linkForm .= html_writer::start_tag('tfoot');
                                     $linkForm .= html_writer::end_tag('tfoot');
 
-                                    $idz = $projeto[$idProjeto]->cod_categoria;
-                                    switch($idz){
+                                    switch($projeto[$idProjeto]->cod_categoria){
                                         case 1:
                                         case 3:
                                         case 5:

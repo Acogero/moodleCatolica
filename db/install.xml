@@ -42,8 +42,7 @@
         <FIELD NAME="id_projeto" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
         <FIELD NAME="cod_projeto" TYPE="char" LENGTH="15" NOTNULL="true" UNSIGNED="true"/>
         <FIELD NAME="titulo" TYPE="char" LENGTH="255" NOTNULL="true" COMMENT="Titulo do projeto"/>
-        <FIELD NAME="resumo" TYPE="text" NOTNULL="true" COMMENT="Resumo do aluno"/>
-        <FIELD NAME="status" TYPE="char" LENGTH="12" NOTNULL="false"/>
+        <FIELD NAME="resumo" TYPE="text" NOTNULL="true" COMMENT="Resumo do aluno"/>        
         <FIELD NAME="data_cadastro" TYPE="char" LENGTH="50" NOTNULL="true"/>
         <FIELD NAME="email" TYPE="char" LENGTH="100" NOTNULL="true"/>
         <FIELD NAME="tags" TYPE="char" LENGTH="255" NOTNULL="true"/>
@@ -143,16 +142,15 @@
       </KEYS>
     </TABLE>
     
-    <TABLE NAME="sepex_projeto_apresentacao" COMMENT="Tabela de registro dos locais de apresentacao">
+    <TABLE NAME="sepex_projeto_definicao" COMMENT="Tabela de registro dos locais de apresentacao">
       <FIELDS>
-        <FIELD NAME="id_projeto_apresentacao" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>  
+        <FIELD NAME="id_projeto_definicao" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>  
         <FIELD NAME="id_projeto" TYPE="int" LENGTH="10" NOTNULL="true"/>
-        <FIELD NAME="data_apresentacao" TYPE="char" LENGTH="50" NOTNULL="false" COMMENT="data de apresentacao do projeto"/>
-        <FIELD NAME="hora_apresentacao" TYPE="char" LENGTH="50" NOTNULL="false" COMMENT="hora de apresentacao do projeto"/>
+        <FIELD NAME="data_apresentacao" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="data e hora de apresentacao do projeto"/>        
         <FIELD NAME="id_local_apresentacao" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true"/>  
       </FIELDS>
       <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id_projeto_apresentacao"/>                
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_projeto_definicao"/>                
         <KEY NAME="id_projeto" TYPE="foreign" FIELDS="id_projeto" REFTABLE="sepex_projeto" REFFIELDS="id_projeto"/>
         <KEY NAME="id_local_apresentacao" TYPE="foreign" FIELDS="id_local_apresentacao" REFTABLE="sepex_local_apresentacao" REFFIELDS="id_local_apresentacao"/>
       </KEYS>
