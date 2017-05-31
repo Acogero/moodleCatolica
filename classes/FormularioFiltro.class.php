@@ -50,7 +50,9 @@ class FormularioFiltro extends moodleform{
             '6' => 'Projeto Integrador',
             '7' => 'Responsábilidade Social',
             '8' => 'Temas Livres',
-            '9' => 'Trabalho de Conclusão de Curso'
+            '9' => 'Trabalho de Conclusão de Curso',
+            '10' => 'Mostra de Vídeos',
+            '11' => 'Concurso de Fotografia'
         ); 
         
         $mform->addElement('select', 'cod_categoria', get_string('categoria', 'sepex'), $categorias);       

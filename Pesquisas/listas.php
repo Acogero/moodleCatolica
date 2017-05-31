@@ -1,15 +1,11 @@
 <?php
 
-/* Página criada para definicao de salas após o envio do projeto
- */
-
+require_once('./classes/Formulario.class.php');
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+require_once(dirname(__FILE__).'/lib.php');
 require_once(dirname(__FILE__).'/locallib.php');
-require_once('./classes/FiltroProjeto.class.php');
 
-global $DB, $CFG, $PAGE;
-
-$id = required_param('id', PARAM_INT); // Modulo do curso
+$id = required_param('id', PARAM_INT); // Course_module ID, ou
 $s  = optional_param('s', 0, PARAM_INT);  // ... Sepex instance ID - deve ser nomeado como o primeiro caractere do módulo.
 
 if ($id) {
@@ -26,7 +22,7 @@ if ($id) {
 
 $lang = current_language();
 require_login($course, true, $cm);
-
+$context_course = context_course::instance($course -> id);       
 $event = \mod_sepex\event\course_module_viewed::create(array(
     'objectid' => $PAGE->cm->instance,
     'context' => $PAGE->context,
@@ -36,26 +32,15 @@ $event->add_record_snapshot('course', $PAGE->course);
 $event->add_record_snapshot($PAGE->cm->modname, $sepex);
 $event->trigger();
 
-$PAGE->set_url('/mod/sepex/cad-form.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/sepex/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($sepex->name));
-$PAGE->set_heading($course->fullname);
+$PAGE->set_heading(format_string($sepex->name));
 
-echo $OUTPUT->header();        
-echo $OUTPUT->heading(format_string('Definição de salas'), 2);
-echo $OUTPUT->box(format_module_intro('sepex', $sepex, $cm->id), 'generalbox', 'intro');
 
-    $mform = new FiltroProjeto("definicaoSala.php?id={$id}");
+//A saída começa aqui.
+echo $OUTPUT->header();
 
-    if($dados = $mform->get_data()):        
+listar_todos_projetos($idProjeto);
 
-        $mform->display();  
-        projetos_filtrados($dados,$id);
-        
-    else:
-            $mform->display();             
-    endif;
-
+//Fim da página
 echo $OUTPUT->footer();
-
-
- 

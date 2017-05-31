@@ -37,37 +37,56 @@ $PAGE->set_heading($course->fullname);
     
     //CHAMADA MODEL       
     if(isset($_GET['data'])){
-        $id_projeto = htmlspecialchars($_GET['data']);                    
+        $id_projeto = htmlspecialchars($_GET['data']);
+        $area = htmlspecialchars($_GET['are']);
+        $turno = htmlspecialchars($_GET['tur']);
+        $categoria = htmlspecialchars($_GET['cat']);
     }
     
     $projeto = listar_projeto_por_id($id_projeto);
     $dados_apresentacao = obter_dados_apresentacao($id_projeto);           
     $tipo = 'orientador';
-    $orientadores = listar_nome_professores($id_projeto, $tipo);                   
-    $locais = $DB->get_records('sepex_local_apresentacao');        
-    $locais_apresentacao = array(''=>'Escolher',);
-    foreach($locais as $local){                    
-        $locais_apresentacao[$local->id_local_apresentacao] =  $local->nome_local_apresentacao;
-    }
-                      
-    //VIEW          
-    echo $OUTPUT->header();         
-    echo $OUTPUT->heading(format_string('Definições do projeto'), 2);
-    echo $OUTPUT->box(format_module_intro('sepex', $sepex, $cm->id), 'generalbox', 'intro');   
-    $header  = html_writer::start_tag('div', array('style' => 'margin-bottom:5%;'));                                                     
-        $header .= html_writer::start_tag('h5', array('class'=>'page-header'));
-            $header.= $projeto[$id_projeto]->cod_projeto.' - '.$projeto[$id_projeto]->titulo;
-        $header .= html_writer::end_tag('h5');
-        $header.= '<b>'.get_string('curso', 'sepex').'</b>'.': '.$projeto[$id_projeto]->curso_cod_curso.'</br>';
-        $header.= '<b>'.get_string('orientadores', 'sepex').'</b>'.': '.$orientadores;
-    $header .= html_writer::end_tag('div');
-    echo $header;
+    $orientadores = listar_nome_professores($id_projeto, $tipo);
+    $tipo2 = 'avaliador';
+    $avaliadores = listar_professor_por_id_projeto($id_projeto,$tipo2);
     
-       
-    $mform = new FormularioDefinicaoProjeto("acao.php?id={$id}&data={$id_projeto}");
-  
-    $mform->display();
-
-    echo $OUTPUT->footer();
+    
+    //VIEW          
+   
+    if(isset($dados_apresentacao[$id_projeto]->id_local_apresentacao)):
+        $mform = new FormularioDefinicaoProjeto("definicao_projeto.php?id={$id}&data={$id_projeto}&acao=1&are={$area}&tur={$turno}&cat={$categoria}", array('data_apresentacao'=>$dados_apresentacao[$id_projeto]->data_apresentacao, 'localapresentacao'=>$dados_apresentacao[$id_projeto]->id_local_apresentacao, 'avaliador'=>$avaliadores[0], 'avaliador2'=>$avaliadores[1],));          
+    else:        
+        $mform = new FormularioDefinicaoProjeto("definicao_projeto.php?id={$id}&data={$id_projeto}&are={$area}&tur={$turno}&cat={$categoria}");          
+    endif;    
+        
+    if(isset($_GET['acao'])){
+        if($mform->is_cancelled()):
+            redirect("view.php?id={$id}&are={$area}&tur={$turno}&cat={$categoria}");        
+        elseif ($data = $mform->get_data()):
+            alterar_definicao_projeto($id_projeto, $data->localapresentacao, $data->data_apresentacao);
+            guardar_professor($id_projeto,$data->avaliador,$tipo2);
+            if($data->avaliador2!= null && $data->avaliador2 != '' ){
+                guardar_professor($id_projeto,$data->avaliador2,$tipo2);
+            }
+            header("Location: view.php?id={$id}&are={$area}&tur={$turno}&cat={$categoria}");
+        else:
+            header_definicao_projeto($sepex, $cm, $projeto, $orientadores, $id_projeto, $mform);
+        endif;        
+    }else{
+        if($mform->is_cancelled()):
+            redirect("view.php?id={$id}&are={$area}&tur={$turno}&cat={$categoria}");        
+        elseif ($data = $mform->get_data()):           
+            guardar_professor($id_projeto,$data->avaliador,$tipo2);
+            if($data->avaliador2!= null && $data->avaliador2 != ''){
+                guardar_professor($id_projeto,$data->avaliador2,$tipo2);
+            }
+            guardar_definicao_projeto($id_projeto, $data->localapresentacao, $data->data_apresentacao);
+            header("Location: view.php?id={$id}&are={$area}&tur={$turno}&cat={$categoria}");
+        else:
+            header_definicao_projeto($sepex, $cm, $projeto, $orientadores, $id_projeto, $mform);
+        endif;
+    }           
+    
+   
 
  

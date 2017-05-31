@@ -61,8 +61,7 @@
     <TABLE NAME="sepex_aluno" COMMENT="Tabela de alunos">
       <FIELDS>
         <FIELD NAME="matricula" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
-        <FIELD NAME="nome_aluno" TYPE="char" LENGTH="300" NOTNULL="true" COMMENT="Nome do aluno"/>
-        <FIELD NAME="id_projeto" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="codigo dos projetos de participacao do aluno"/>
+        <FIELD NAME="nome_aluno" TYPE="char" LENGTH="300" NOTNULL="true" COMMENT="Nome do aluno"/>        
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="matricula"/>
@@ -115,20 +114,45 @@
       </KEYS>
     </TABLE>    
     
-    <TABLE NAME="sepex_projeto_professor" COMMENT="Tabela de registro de avaliacoes ">
+    <TABLE NAME="sepex_projeto_professor" COMMENT="Tabela de registro das acoes dos professores ">
       <FIELDS>
         <FIELD NAME="id_projeto_professor" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>  
         <FIELD NAME="id_projeto" TYPE="int" LENGTH="10" NOTNULL="true"/>
-        <FIELD NAME="data_avaliacao" TYPE="char" LENGTH="50" NOTNULL="false" UNSIGNED="true"/>
-        <FIELD NAME="nota_resumo" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
-        <FIELD NAME="nota_apresentacao" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
         <FIELD NAME="professor_cod_professor" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true"/>
+        <FIELD NAME="data_avaliacao" TYPE="char" LENGTH="50" NOTNULL="false"/>
+        <FIELD NAME="status_resumo" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="obs_orientador" TYPE="char" LENGTH="300" NOTNULL="false"/>               
         <FIELD NAME="tipo" TYPE="char" LENGTH="15" NOTNULL="true" COMMENT="avaliador-orientador"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id_projeto_professor"/>
         <KEY NAME="id_projeto" TYPE="foreign" FIELDS="id_projeto" REFTABLE="sepex_projeto" REFFIELDS="id_projeto"/>
         <KEY NAME="professor_cod_professor" TYPE="foreign" FIELDS="professor_cod_professor" REFTABLE="sepex_professor" REFFIELDS="cod_professor"/>
+      </KEYS>
+    </TABLE>
+    
+    <TABLE NAME="sepex_projeto_avaliacao" COMMENT="Tabela de registro de avaliacoes ">
+      <FIELDS>
+        <FIELD NAME="id_projeto_avaliacao" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>  
+        <FIELD NAME="id_projeto_professor" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="resumo1" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="resumo2" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="resumo3" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="resumo4" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="resumo5" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="resumo6" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="total_resumo" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="avaliacao1" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="avaliacao2" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="avaliacao3" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="avaliacao4" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="avaliacao5" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="avaliacao6" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>
+        <FIELD NAME="total_avaliacao" TYPE="float" LENGTH="10" NOTNULL="false" UNSIGNED="true"/>                
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_projeto_avaliacao"/>
+        <KEY NAME="id_projeto_professor" TYPE="foreign" FIELDS="id_projeto_professor" REFTABLE="sepex_projeto_professor" REFFIELDS="id_projeto_professor"/>        
       </KEYS>
     </TABLE>
     

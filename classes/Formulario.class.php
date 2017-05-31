@@ -92,7 +92,9 @@ class Formulario extends moodleform {
             '6' => 'Projeto Integrador',
             '7' => 'Responsábilidade Social',
             '8' => 'Temas Livres',
-            '9' => 'Trabalho de Conclusão de Curso'
+            '9' => 'Trabalho de Conclusão de Curso',
+            '10' => 'Mostra de Vídeos',
+            '11' => 'Concurso de Fotografia'
         ); 
         
         $mform->addElement('select', 'cod_categoria', get_string('categoria', 'sepex'), $categorias);
@@ -109,13 +111,24 @@ class Formulario extends moodleform {
         $mform->addHelpButton('titulo', 'titulo', 'sepex');
         $mform->setDefault('titulo',$this->_customdata['titulo']);
         
-        //MATRICULA DO ALUNO
-        $mform->addElement('text', 'aluno_matricula', get_string('integrantes', 'sepex'), array('size' => '64'));
+        //MATRICULA DO ALUNO                           
+        $procurarAlunos = $DB->get_records('sepex_aluno');
+        $nomes = array();
+
+        foreach($procurarAlunos as $procurarAlunos){
+            $nomes[$procurarAlunos->matricula] = $procurarAlunos->nome_aluno;
+        }
+
+        $options = array(
+            'multiple' => true            
+        );
+        $mform->addElement('autocomplete', 'aluno_matricula', get_string('integrantes', 'sepex'), $nomes, $options);
         $mform->setType('aluno_matricula', PARAM_RAW);
         $mform->addRule('aluno_matricula', get_string('integrantevazio', 'sepex'), 'required', null, 'client');
         $mform->addRule('aluno_matricula', get_string('integrantes', 'sepex', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('aluno_matricula', 'integrantes', 'sepex');
         $mform->setDefault('aluno_matricula',$this->_customdata['aluno_matricula']);
+        
               
         //ORIENTADOR        
         $orientadores = $DB->get_records('sepex_professor');
@@ -129,8 +142,10 @@ class Formulario extends moodleform {
         $mform->addRule('cod_professor', get_string('orientadorvazio', 'sepex'), 'required', null, 'client');
         $mform->addHelpButton('cod_professor', 'orientador', 'sepex');
         $mform->setDefault('cod_professor',$this->_customdata['cod_professor']);
-        $mform->setDefault('cod_professor2',$this->_customdata['cod_professor2']);
         
+        if(isset($this->_customdata['cod_professor2'])){
+            $mform->setDefault('cod_professor2',$this->_customdata['cod_professor2']);
+        }
         //RESUMO        
         $resumo = $this->_customdata['resumo'];
         $mform->addElement('editor', 'resumo', get_string('resumo', 'sepex'), null, array('context' => $modcontext))->setValue( array('text' => $resumo));        

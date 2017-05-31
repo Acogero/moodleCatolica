@@ -57,6 +57,11 @@ $formulario  = html_writer::start_tag('form', array('id' => 'formularioSepex', '
 $formulario .= html_writer::end_tag('form');
 echo $formulario;
 
+$link_voltar = html_writer::start_tag('a', array('href'=> '../view.php?id='.$id ,'style' => 'margin-bottom:3%;')); 
+$link_voltar .= get_string('voltar_menu','sepex');
+$link_voltar .= html_writer::end_tag('a');
+echo $link_voltar;
+
 $locais = listar_locais_apresentacao();
 echo '<table class="forumheaderlist table table-striped">';
             echo '<thead>';

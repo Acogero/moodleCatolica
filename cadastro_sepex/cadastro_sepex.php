@@ -11,6 +11,11 @@ global $DB, $CFG, $PAGE;
 
 $id = required_param('id', PARAM_INT); // Modulo do curso
 $s  = optional_param('s', 0, PARAM_INT);  // id da instância do plugin sepex
+$add    = optional_param('add',0, PARAM_INT);
+$update = optional_param('update',0, PARAM_INT);
+$id_projeto  = optional_param('data',0, PARAM_INT);
+$orientador1  = optional_param('p',0,PARAM_INT);
+$orientador2  = optional_param('p2',0,PARAM_INT);
 
 if ($id) {
     $cm         = get_coursemodule_from_id('sepex', $id, 0, false, MUST_EXIST);
@@ -48,48 +53,40 @@ $PAGE->set_heading($course->fullname);
 
 define('VIEW_URL_LINK', "../view.php?id=" . $id);
 
-    //INSTANCIAÇÃO DO OBJETO FORMULÁRIO - Obtendo o id do projeto via get
-
-    if(isset($_GET['data'])){
-        $codProjeto = htmlspecialchars($_GET['data']);        
-        $projeto = listar_projeto_por_id($codProjeto);
-        $alunos = listar_matricula_alunos_por_id_projeto($codProjeto);
-        $professores = listar_professor_por_id_projeto($codProjeto);
-        $modcontext    = context_module::instance($cm->id);
-        $coursecontext = context_course::instance($course->id);
-
-        //Instanciação de um novo formulario passando como parametro: (destino_formulario, array(informe aqui os campos e os valores dos campos)        
-        $mform = new Formulario("cadastro_sepex.php?id={$id}&acao=1&idp={$codProjeto}&cod={$projeto[$codProjeto]->cod_projeto}", array('modcontext'=>$modcontext, 'cod_curso'=>$projeto[$codProjeto]->curso_cod_curso,'titulo' => $projeto[$codProjeto]->titulo, 'resumo' => $projeto[$codProjeto]->resumo, 'tags' => $projeto[$codProjeto]->tags, 'aloca_mesa' => $projeto[$codProjeto]->aloca_mesa, 'cod_periodo' => $projeto[$codProjeto]->cod_periodo, 'turno' => $projeto[$codProjeto]->turno, 'cod_categoria' => $projeto[$codProjeto]->cod_categoria, 'aluno_matricula' => $alunos, 'cod_professor'=> $professores[1],'cod_professor2'=> $professores[2] ));
-    }
-    else{
-        $mform = new Formulario("cadastro_sepex.php?id={$id}");
-    }
-
-    //AÇÃO SOBRE O FORMULÁRIO DE CADASTRO - Verifica-se se a ação é inserir ou editar um formulario de cadastro.
-    if(isset($_GET['acao'])){ 
-
-        $id_projeto = htmlspecialchars($_GET['idp']);
-        $codigo_projeto = htmlspecialchars($_GET['cod']);
-
-        if($dados = $mform->get_data()):        
-            atualizar_projeto($dados,$id_projeto);
-            header("Location:". VIEW_URL_LINK);
-        else:
-            exibir_formulario_inscricao($sepex,$cm,$mform);
-        endif;
-        
-    }else{
+//    //INSTANCIAÇÃO DO OBJETO FORMULÁRIO - Obtendo o id do projeto via get
+    if (!empty($add)) {
+        $mform = new Formulario("cadastro_sepex.php?id={$id}&add=1");        
+         
         if($dados = $mform->get_data()):        
             $codigo = criarCodigo($dados);
             guardar_projeto($dados,$codigo,$USER);
-            enviar_email($USER);
+//            enviar_email($USER);
             header("Location:". VIEW_URL_LINK);
         else:     
             exibir_formulario_inscricao($sepex,$cm,$mform);
         endif;
+
+    } else if (!empty($update)) {
+        
+        $projeto = listar_projeto_por_id($id_projeto);
+        $alunos = listar_matricula_alunos_por_id_projeto($id_projeto);
+        $tipo = 'orientador';
+        $professores = listar_professor_por_id_projeto($id_projeto, $tipo);
+        
+        //Instanciação de um novo formulario passando como parametro: (destino_formulario, array(informe aqui os campos e os valores dos campos)        
+        if(isset($professores[1])){
+            $mform = new Formulario("cadastro_sepex.php?id={$id}&update=1&data={$id_projeto}&cod={$projeto[$id_projeto]->cod_projeto}&p={$professores[0]}&p2={$professores[1]}", array('modcontext'=>$modcontext, 'cod_curso'=>$projeto[$id_projeto]->curso_cod_curso,'titulo' => $projeto[$id_projeto]->titulo, 'resumo' => $projeto[$id_projeto]->resumo, 'tags' => $projeto[$id_projeto]->tags, 'aloca_mesa' => $projeto[$id_projeto]->aloca_mesa, 'cod_periodo' => $projeto[$id_projeto]->cod_periodo, 'turno' => $projeto[$id_projeto]->turno, 'cod_categoria' => $projeto[$id_projeto]->cod_categoria, 'aluno_matricula' => $alunos, 'cod_professor'=> $professores[0],'cod_professor2'=> $professores[1] ));
+        }else{
+            $mform = new Formulario("cadastro_sepex.php?id={$id}&update=1&data={$id_projeto}&cod={$projeto[$id_projeto]->cod_projeto}&p={$professores[0]}&p2=0", array('modcontext'=>$modcontext, 'cod_curso'=>$projeto[$id_projeto]->curso_cod_curso,'titulo' => $projeto[$id_projeto]->titulo, 'resumo' => $projeto[$id_projeto]->resumo, 'tags' => $projeto[$id_projeto]->tags, 'aloca_mesa' => $projeto[$id_projeto]->aloca_mesa, 'cod_periodo' => $projeto[$id_projeto]->cod_periodo, 'turno' => $projeto[$id_projeto]->turno, 'cod_categoria' => $projeto[$id_projeto]->cod_categoria, 'aluno_matricula' => $alunos, 'cod_professor'=> $professores[0]));
+        }
+        
+        if($dados = $mform->get_data()):        
+            atualizar_projeto($dados,$id_projeto, $orientador1,$orientador2);
+            header("Location:". VIEW_URL_LINK);            
+        else:
+            exibir_formulario_inscricao($sepex,$cm,$mform);
+        endif;        
     }
-
-
 
 
 

@@ -90,7 +90,9 @@ echo $OUTPUT->header();
         }
         //-------------------------------- PROFESSOR
         else if (has_capability('mod/sepex:openprofessor', $context_course)) {            
-            echo 'JesusVem!';                          
+            $usuario = $USER->username;
+            listar_projetos_professor($usuario,$id);
+            
         }
         //-------------------------------- GERENTE
         else {

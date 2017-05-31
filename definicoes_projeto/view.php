@@ -38,11 +38,22 @@ $PAGE->set_heading($course->fullname);
     echo $OUTPUT->header();         
     echo $OUTPUT->heading(format_string('DEFINIÇÕES DE APRESENTAÇÃO PROJETO'), 2);
     echo $OUTPUT->box(format_string(''), 2);   
-                   
-    $mform = new FormularioFiltro("view.php?id={$id}");
+    if(isset($_GET['are'])){
+        $area = htmlspecialchars($_GET['are']);
+        $turno = htmlspecialchars($_GET['tur']);
+        $categoria = htmlspecialchars($_GET['cat']);        
+        $mform = new FormularioFiltro("view.php?id={$id}", array('area_curso'=>$area, 'turno'=>$turno, 'cod_categoria'=>$categoria));                        
+    }
+    else{
+        $mform = new FormularioFiltro("view.php?id={$id}");
+    }
     
-    $mform->display();         
-                
+    $mform->display();
+    $link_voltar = html_writer::start_tag('a', array('href'=> '../view.php?id='.$id)); 
+    $link_voltar .= get_string('voltar_menu','sepex');
+    $link_voltar .= html_writer::end_tag('a');
+    echo $link_voltar;
+    
     if($dados = $mform->get_data()){    
         $projetos = obter_projetos_por_area_turno_categoria($dados);
         
@@ -66,7 +77,7 @@ $PAGE->set_heading($course->fullname);
                         echo '<tr>';
                             echo'<td><a>'.$projeto->cod_projeto.'</a></td>';
                                 $titulo  = html_writer::start_tag('td');
-                                $titulo .= html_writer::start_tag('a', array('href'=> 'definicao_projeto.php?id='.$id.'&data='.$projeto->id_projeto,));
+                                $titulo .= html_writer::start_tag('a', array('href'=> 'definicao_projeto.php?id='.$id.'&data='.$projeto->id_projeto.'&are='.$dados->area_curso.'&tur='.$dados->turno.'&cat='.$dados->cod_categoria,)); 
                                 $titulo .= $projeto->titulo;
                                 $titulo .= html_writer::end_tag('a'); 
                                 $titulo .= html_writer::end_tag('td'); 
@@ -81,7 +92,7 @@ $PAGE->set_heading($course->fullname);
                                 echo '<td>'.'</td>';
                             }
                                 $btnEditar = html_writer::start_tag('td');
-                                $btnEditar .= html_writer::start_tag('a', array('href'=> 'definicao_projeto.php?id='.$id.'&data='.$projeto->id_projeto,));
+                                $btnEditar .= html_writer::start_tag('a', array('href'=> 'definicao_projeto.php?id='.$id.'&data='.$projeto->id_projeto.'&are='.$dados->area_curso.'&tur='.$dados->turno.'&cat='.$dados->cod_categoria,)); 
                                 $btnEditar .= html_writer::start_tag('input', array('type'=>'button', 'id'=> 'editar', 'value'=>get_string('editar','sepex'), 'class' => 'btn btn-default' ));                                                                                                                     
                                 $btnEditar .= html_writer::end_tag('td');
                                 echo $btnEditar;
@@ -97,5 +108,3 @@ $PAGE->set_heading($course->fullname);
     
     echo $OUTPUT->footer();
 
-
- 

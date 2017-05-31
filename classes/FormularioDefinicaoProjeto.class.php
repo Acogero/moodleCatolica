@@ -50,10 +50,8 @@ class FormularioDefinicaoProjeto extends moodleform {
         $mform->addHelpButton('avaliador', 'avaliador', 'sepex');
         $mform->setDefault('avaliador', $this->_customdata['avaliador']);
         $mform->setDefault('avaliador2', $this->_customdata['avaliador2']);
-                   
-        $mform->addElement('submit', 'btnEnviar', get_string("btnEnviar", 'sepex'));
-                
-        
+                           
+        $this->add_action_buttons();
     }
     function validation($data, $files) {
         return array();
